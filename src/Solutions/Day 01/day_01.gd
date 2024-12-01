@@ -1005,6 +1005,10 @@ var input: String = """80784   47731
 
 
 func _ready() -> void:
+	part1()
+
+
+func part1() -> void:
 	var lines: PackedStringArray = input.split("\n")
 	var left_list: Array[int]
 	var right_list: Array[int]
