@@ -1048,19 +1048,19 @@ func calculate_total_distance(left_list: Array[int], right_list: Array[int]) -> 
 func part2(left_list: Array[int], right_list: Array[int]) -> void:
 
 	# Compute the similarity score
-	var result = calculate_similarity_score(left_list, right_list)
+	var result: int = calculate_similarity_score(left_list, right_list)
 	print("Similarity Score: ", result)
 
 
 func calculate_similarity_score(left_list: Array, right_list: Array) -> int:
 	# Create a dictionary to store the frequency of each number in the right list
-	var frequency = {}
-	for num in right_list:
+	var frequency: Dictionary = {}
+	for num: int in right_list:
 		frequency[num] = frequency.get(num, 0) + 1
 
 	# Calculate the similarity score
-	var similarity_score = 0
-	for num in left_list:
+	var similarity_score: int = 0
+	for num: int in left_list:
 		if num in frequency:
 			similarity_score += num * frequency[num]
 
