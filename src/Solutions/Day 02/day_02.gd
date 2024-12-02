@@ -31,10 +31,10 @@ func convertInputToArrays(input: String) -> Array:
 #region part 1
 func isSafe(report: Array) -> bool:
 	# Determine if the report is strictly increasing or strictly decreasing
-	var increasing = true
-	var decreasing = true
+	var increasing: bool = true
+	var decreasing: bool = true
 	
-	for i in range(report.size() - 1):
+	for i:int in range(report.size() - 1):
 		var diff = report[i + 1] - report[i]
 		
 		# Rule 2: Check if the difference is out of bounds
@@ -48,15 +48,15 @@ func isSafe(report: Array) -> bool:
 			increasing = false
 		
 		# If both increasing and decreasing are false, the report is unsafe
-		if not increasing and not decreasing:
+		if not increasing && not decreasing:
 			return false
 
-	return increasing or decreasing
+	return increasing || decreasing
 
 
 func countSafeReports(reports: Array) -> int:
-	var safe_count = 0
-	for report in reports:
+	var safe_count: int = 0
+	for report: Array in reports:
 		if isSafe(report):
 			safe_count += 1
 	return safe_count
@@ -70,7 +70,7 @@ func isSafeWithDampener(report: Array) -> bool:
 	
 	# Try removing each level and check if the modified report becomes safe
 	for i in range(report.size()):
-		var modified_report = report.duplicate()
+		var modified_report:Array = report.duplicate()
 		modified_report.remove_at(i)
 		
 		if isSafe(modified_report):
@@ -80,8 +80,8 @@ func isSafeWithDampener(report: Array) -> bool:
 
 
 func countSafeReportsWithDampener(reports: Array) -> int:
-	var safe_count = 0
-	for report in reports:
+	var safe_count: int = 0
+	for report: Array in reports:
 		if isSafeWithDampener(report):
 			safe_count += 1
 	return safe_count
