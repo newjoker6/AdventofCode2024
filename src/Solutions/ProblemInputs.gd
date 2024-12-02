@@ -1,10 +1,11 @@
 extends Node
 ## Holds all the input data for each day of [color=#FF6347][url=https://adventofcode.com/2024]Advent of Code[/url][/color][br]
 ## [img width=300]res://src/aocDocImage.jpg[/img]
+class_name ProblemInputs
 
 #region day1
 ## The inputs for day 1 as specified by AoC
-var day1Inputs: String = """80784   47731
+static var day1Inputs: String = """80784   47731
 81682   36089
 22289   41038
 79525   17481
@@ -1008,7 +1009,7 @@ var day1Inputs: String = """80784   47731
 
 #region day2
 ## The inputs for day 2 as specified by AoC
-var day2Inputs: String = """40 42 45 46 49 47
+static var day2Inputs: String = """40 42 45 46 49 47
 65 66 68 71 72 72
 44 46 49 52 55 59
 62 63 66 68 71 74 80
