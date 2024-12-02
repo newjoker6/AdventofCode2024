@@ -4,7 +4,7 @@ var inputs: String = ProblemInputs.day2Inputs
 
 
 func _ready() -> void:
-	var newInputs: Array = convertInputToArrays(inputs)
+	var newInputs: Array[Array] = convertInputToArrays(inputs)
 	
 	var safeCount: int = countSafeReports(newInputs)
 	print_rich("The [b]undampened[/b] safe count is: [color=Green]", safeCount)
@@ -15,16 +15,19 @@ func _ready() -> void:
 
 ## Example of creating built-in docs
 ## Converts a multiline string into an [Array] of [Array][lb][int][rb]
-func convertInputToArrays(input: String) -> Array:
-	var result: Array = []
+func convertInputToArrays(input: String) -> Array[Array]:
+	var result: Array[Array] = []
 	var lines: PackedStringArray = input.split("\n")  # Split by line breaks
 	
 	for line: String in lines:
-		if line.strip_edges() != "":  # Ignore empty lines
-			var cleanLine: String = line.strip_edges()
-			var convArray: Array = cleanLine.split(" ") as Array
-			var int_array: Array = convArray.map(func(x): return int(x))
-			result.append(int_array)
+		var stripLine: String = line.strip_edges()
+
+		if stripLine == "":
+			continue # Ignore empty lines
+
+		var convArray: Array = stripLine.split(" ")
+		var intArray: Array = convArray.map(func(x): return int(x))
+		result.append(intArray)
 			
 	return result
 
@@ -34,8 +37,8 @@ func isSafe(report: Array) -> bool:
 	var increasing: bool = true
 	var decreasing: bool = true
 	
-	for i:int in range(report.size() - 1):
-		var diff = report[i + 1] - report[i]
+	for i: int in range(report.size() - 1):
+		var diff: int = report[i + 1] - report[i]
 		
 		# Rule 2: Check if the difference is out of bounds
 		if abs(diff) < 1 or abs(diff) > 3:
@@ -48,7 +51,7 @@ func isSafe(report: Array) -> bool:
 			increasing = false
 		
 		# If both increasing and decreasing are false, the report is unsafe
-		if not increasing && not decreasing:
+		if !increasing && !decreasing:
 			return false
 
 	return increasing || decreasing
@@ -69,7 +72,7 @@ func isSafeWithDampener(report: Array) -> bool:
 		return true
 	
 	# Try removing each level and check if the modified report becomes safe
-	for i in range(report.size()):
+	for i: int in range(report.size()):
 		var modified_report:Array = report.duplicate()
 		modified_report.remove_at(i)
 		
