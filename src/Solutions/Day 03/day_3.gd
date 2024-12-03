@@ -22,10 +22,10 @@ func calculateMulSum(memory: String) -> int:
 	var matches: Array = regex.search_all(memory)
 
 	# Process all matches at once
-	for match in matches:
-		# Extract X and Y from the match groups
-		var x: int = match.get_string(1).to_int()
-		var y: int = match.get_string(2).to_int()
+	for Match in matches:
+		# Extract X and Y from the Match groups
+		var x: int = Match.get_string(1).to_int()
+		var y: int = Match.get_string(2).to_int()
 
 		# Add the product to the total sum
 		total_sum += x * y
@@ -45,8 +45,8 @@ func calculateMulSumWithConditions(memory: String) -> int:
 	var matches: Array = regex.search_all(memory)
 
 	# Process all matches
-	for match in matches:
-		var full_match: String = match.get_string(0)
+	for Match in matches:
+		var full_match: String = Match.get_string(0)
 
 		if full_match == "do()":
 			is_enabled = true
@@ -57,8 +57,8 @@ func calculateMulSumWithConditions(memory: String) -> int:
 		elif full_match.begins_with("mul("):
 			# Handle mul(X,Y) only if enabled
 			if is_enabled:
-				var x: int = match.get_string(2).to_int()
-				var y: int = match.get_string(3).to_int()
+				var x: int = Match.get_string(2).to_int()
+				var y: int = Match.get_string(3).to_int()
 				total_sum += x * y
 
 	return total_sum
