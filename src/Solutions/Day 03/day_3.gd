@@ -8,7 +8,7 @@ func _ready() -> void:
 	print_rich("Part 1\tTotal Sum: ", "[color=Green]%s[/color]" %result)
 	result = calculateMulSumWithConditions(inputs)
 	print_rich("Part 2\tTotal Sum: ", "[color=Green]%s[/color]" %result)
-	print_rich("\n[img height=350]res://src/Solutions/Day 03/LeGasp.jpg[/img]")
+	print_rich("\n[img height=250]res://src/Solutions/Day 03/LeGasp.jpg[/img]")
 	get_tree().quit(0) # Quits the program automatically after running because i said so
 
 
