@@ -85,9 +85,9 @@ func countXmas(grid: Array) -> int:
 				var BR: String = grid[row+1][col+1]  # bottom-right diagonal
 				
 				 # Check for valid X-MAS patterns
-				if (TL == "M" or TL == "S") and (TR == "M" or TR == "S") and (BL == "S" or BL == "M") and (BR == "M" or BR == "S"):
-					if (TL == "M" and BR == "S" or TL == "S" and BR == "M") and (TR == "M" and BL == "S" or TR == "S" and BL == "M"):
-						count += 1
+				if ((TL == "M" && BR == "S" || TL == "S" && BR == "M") &&
+				(TR == "M" && BL == "S" || TR == "S" && BL == "M")):
+					count += 1
 
 	return count
 #endregion
