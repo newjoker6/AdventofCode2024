@@ -29,7 +29,7 @@ func convertInputToGrid(input: String) -> Array[Array]:
 #region part 1
 # Helper function to check bounds
 func isInBounds(row: int, col: int, rows: int, cols: int) -> bool:
-	return row >= 0 and row < rows and col >= 0 and col < cols
+	return row >= 0 && row < rows && col >= 0 && col < cols
 
 
 func countXmasOccurrences(grid: Array[Array]) -> int:
@@ -60,7 +60,7 @@ func countXmasOccurrences(grid: Array[Array]) -> int:
 				for i: int in range(word_len):
 					var new_row: int = row + direction.x * i
 					var new_col: int = col + direction.y * i
-					if not isInBounds(new_row, new_col, rows, cols) or grid[new_row][new_col] != word[i]:
+					if !isInBounds(new_row, new_col, rows, cols) || grid[new_row][new_col] != word[i]:
 						Match = false
 						break
 				if Match:
