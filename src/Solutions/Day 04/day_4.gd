@@ -13,6 +13,7 @@ func _ready() -> void:
 	count = countXmas(grid)
 	print_rich("Total occurrences of [color=Yellow]MAS[/color] in [color=Red]X[/color]: ", "[color=Green]", count, "[/color]")
 
+
 #region setup
 # Converts a multiline string into a 2D Array[Array]
 func convertInputToGrid(input: String) -> Array[Array]:
@@ -50,12 +51,12 @@ func countXmasOccurrences(grid: Array[Array]) -> int:
 	]
 
 	# Check all starting points in the grid
-	for row in range(rows):
-		for col in range(cols):
+	for row: int in range(rows):
+		for col: int in range(cols):
 			# Check each direction from this starting point
-			for direction in directions:
+			for direction: Vector2i in directions:
 				var Match: bool = true
-				for i in range(word_len):
+				for i: int in range(word_len):
 					var new_row: int = row + direction.x * i
 					var new_col: int = col + direction.y * i
 					if not isInBounds(new_row, new_col, rows, cols) or grid[new_row][new_col] != word[i]:
@@ -69,18 +70,18 @@ func countXmasOccurrences(grid: Array[Array]) -> int:
 
 #region part 2
 func countXmas(grid: Array) -> int:
-	var count = 0
-	var rows = grid.size()
-	var cols = grid[0].size()
+	var count: int = 0
+	var rows: int = grid.size()
+	var cols: int = grid[0].size()
 
 	# Iterate over all possible centers where "X-MAS" can fit
-	for row in range(1, rows - 1):  # Skip the first and last rows
-		for col in range(1, cols - 1):  # Skip the first and last columns
+	for row: int in range(1, rows - 1):  # Skip the first and last rows
+		for col: int in range(1, cols - 1):  # Skip the first and last columns
 			if grid[row][col] == "A":
-				var tl = grid[row-1][col-1]  # top-left diagonal
-				var tr = grid[row-1][col+1]  # top-right diagonal
-				var bl = grid[row+1][col-1]  # bottom-left diagonal
-				var br = grid[row+1][col+1]  # bottom-right diagonal
+				var tl: String = grid[row-1][col-1]  # top-left diagonal
+				var tr: String = grid[row-1][col+1]  # top-right diagonal
+				var bl: String = grid[row+1][col-1]  # bottom-left diagonal
+				var br: String = grid[row+1][col+1]  # bottom-right diagonal
 				
 				 # Check for valid X-MAS patterns
 				if (tl == "M" or tl == "S") and (tr == "M" or tr == "S") and (bl == "S" or bl == "M") and (br == "M" or br == "S"):
