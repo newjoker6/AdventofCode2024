@@ -2,6 +2,7 @@ extends Control
 
 var inputs: String = ProblemInputs.day4Inputs
 
+
 func _ready() -> void:
 	var grid: Array[Array] = convertInputToGrid(inputs)
 
@@ -78,14 +79,14 @@ func countXmas(grid: Array) -> int:
 	for row: int in range(1, rows - 1):  # Skip the first and last rows
 		for col: int in range(1, cols - 1):  # Skip the first and last columns
 			if grid[row][col] == "A":
-				var tl: String = grid[row-1][col-1]  # top-left diagonal
-				var tr: String = grid[row-1][col+1]  # top-right diagonal
-				var bl: String = grid[row+1][col-1]  # bottom-left diagonal
-				var br: String = grid[row+1][col+1]  # bottom-right diagonal
+				var TL: String = grid[row-1][col-1]  # top-left diagonal
+				var TR: String = grid[row-1][col+1]  # top-right diagonal
+				var BL: String = grid[row+1][col-1]  # bottom-left diagonal
+				var BR: String = grid[row+1][col+1]  # bottom-right diagonal
 				
 				 # Check for valid X-MAS patterns
-				if (tl == "M" or tl == "S") and (tr == "M" or tr == "S") and (bl == "S" or bl == "M") and (br == "M" or br == "S"):
-					if (tl == "M" and br == "S" or tl == "S" and br == "M") and (tr == "M" and bl == "S" or tr == "S" and bl == "M"):
+				if (TL == "M" or TL == "S") and (TR == "M" or TR == "S") and (BL == "S" or BL == "M") and (BR == "M" or BR == "S"):
+					if (TL == "M" and BR == "S" or TL == "S" and BR == "M") and (TR == "M" and BL == "S" or TR == "S" and BL == "M"):
 						count += 1
 
 	return count
