@@ -11,7 +11,6 @@ var direction_vectors = {
 }
 
 func _ready() -> void:
-	
 	var grid: Array = parse_grid(inputs)
 	
 	# Find the starting position and direction of the guard
@@ -21,11 +20,17 @@ func _ready() -> void:
 	
 	# Part 1: Simulate the guard's movement and get the number of distinct positions visited
 	var visited_positions: Array = simulate_guard_path(grid, start_pos, direction)
-	print("Distinct positions visited (Part 1): ", visited_positions.size())
+	print_rich("[center]------------------------------------------")
+	print("[center]Distinct positions visited (Part 1): ", visited_positions.size())
+	print_rich("[center]------------------------------------------")
 
 	# Part 2: Find all positions for adding an obstruction and causing the guard to loop
+	print_rich("[center][b]Calculating...[/b][/center]")
 	var valid_positions = find_valid_obstruction_positions(grid, start_pos, visited_positions)
-	print("Part 2: Valid obstruction positions: ", valid_positions.size())
+	print_rich("[center]------------------------------------------")
+	print("[center]Part 2: Valid obstruction positions: ", valid_positions.size())
+	print_rich("[center]------------------------------------------")
+	print_rich("[center][b]Calculations finished[/b][/center]")
 
 
 # Converts the input string into a grid of characters
@@ -81,13 +86,15 @@ func simulate_guard_path(grid: Array, start_pos: Vector2, direction: Vector2) ->
 #endregion
 
 #region part 2
-# Simulates the guard's movement and returns all positions visited
+# Simulates the guard's movement and returns all visited positions.
 func simulate_guard(map: Array, start: Vector2) -> Array:
 	var pos = start
 	var direction = Direction.UP
-	var visited_positions = [pos]
+	var visited_positions = {}  # Use a Dictionary for fast lookup
 
 	while is_within_bounds(map, pos):
+		visited_positions[pos] = true
+
 		var next_pos = pos + direction_vectors[direction]
 		if not is_within_bounds(map, next_pos):
 			break
@@ -96,11 +103,8 @@ func simulate_guard(map: Array, start: Vector2) -> Array:
 			direction = turn_right(direction)
 		else:
 			pos = next_pos
-			if not visited_positions.has(pos):
-				visited_positions.append(pos)
-				print("Guard moved to: ", pos)
 
-	return visited_positions
+	return visited_positions.keys()
 
 
 # Finds valid positions for adding an obstruction that causes a loop
@@ -113,7 +117,7 @@ func find_valid_obstruction_positions(map: Array, start: Vector2, traversed_path
 
 		# Temporarily add an obstruction at the candidate position
 		map[candidate.y][candidate.x] = "#"
-		if causes_loop(map, start):
+		if causes_loop(map, start):  # Check if this creates a loop
 			valid_positions.append(candidate)
 		map[candidate.y][candidate.x] = "."  # Reset the map
 
@@ -124,13 +128,13 @@ func find_valid_obstruction_positions(map: Array, start: Vector2, traversed_path
 func causes_loop(map: Array, start: Vector2) -> bool:
 	var pos = start
 	var direction = Direction.UP
-	var visited_states = []
+	var visited_states = {}  # Use a Dictionary to track states (position + direction)
 
 	while is_within_bounds(map, pos):
-		var state = [pos, direction]
+		var state = str(pos) + ":" + str(direction)  # Serialize state for hashing
 		if visited_states.has(state):
 			return true  # Loop detected
-		visited_states.append(state)
+		visited_states[state] = true
 
 		var next_pos = pos + direction_vectors[direction]
 		if not is_within_bounds(map, next_pos):
@@ -143,18 +147,19 @@ func causes_loop(map: Array, start: Vector2) -> bool:
 
 	return false
 
-
 # Utility functions
+
 
 # Returns true if the position is within the bounds of the map
 func is_within_bounds(map: Array, pos: Vector2) -> bool:
 	return pos.x >= 0 and pos.x < map[0].size() and pos.y >= 0 and pos.y < map.size()
 
+
 # Returns true if the position contains a wall
 func is_wall(map: Array, pos: Vector2) -> bool:
 	return is_within_bounds(map, pos) and map[pos.y][pos.x] == "#"
 
-# Turns the guard 90° to the right
+
 func turn_right(direction: int):
 	match direction:
 		Direction.UP:
@@ -165,4 +170,5 @@ func turn_right(direction: int):
 			return Direction.LEFT
 		Direction.LEFT:
 			return Direction.UP
+
 #endregion
