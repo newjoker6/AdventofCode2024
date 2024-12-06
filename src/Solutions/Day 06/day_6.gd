@@ -21,7 +21,7 @@ func _ready() -> void:
 	# Part 1: Simulate the guard's movement and get the number of distinct positions visited
 	var visited_positions: Array = simulate_guard_path(grid, start_pos, direction)
 	print_rich("[center]------------------------------------------")
-	print("[center]Distinct positions visited (Part 1): ", visited_positions.size())
+	print("[center]Distinct positions visited (Part 1): [color=Green]{visits}[/color]".format({"visits": visited_positions.size()}))
 	print_rich("[center]------------------------------------------")
 
 	# Part 2: Find all positions for adding an obstruction and causing the guard to loop
@@ -30,7 +30,7 @@ func _ready() -> void:
 	var valid_positions = find_valid_obstruction_positions(grid, start_pos, visited_positions)
 	var end = Time.get_ticks_msec()
 	print_rich("[center]------------------------------------------")
-	print("[center]Part 2: Valid obstruction positions: ", valid_positions.size())
+	print("[center]Part 2: Valid obstruction positions: [color=Green]{obstructions}[/color]".format({"obstructions": valid_positions.size()}))
 	print_rich("[center]------------------------------------------")
 	print_rich("[center][b]Calculations finished: {time}seconds[/b][/center]".format({"time": ((end - start) / 1000)}) )
 
