@@ -26,13 +26,16 @@ func _ready() -> void:
 
 	# Part 2: Find all positions for adding an obstruction and causing the guard to loop
 	print_rich("[center][b]Calculating...[/b][/center]")
+	var start = Time.get_ticks_msec()
 	var valid_positions = find_valid_obstruction_positions(grid, start_pos, visited_positions)
+	var end = Time.get_ticks_msec()
 	print_rich("[center]------------------------------------------")
 	print("[center]Part 2: Valid obstruction positions: ", valid_positions.size())
 	print_rich("[center]------------------------------------------")
-	print_rich("[center][b]Calculations finished[/b][/center]")
+	print_rich("[center][b]Calculations finished: {time}seconds[/b][/center]".format({"time": ((end - start) / 1000)}) )
 
 
+#region setup
 # Converts the input string into a grid of characters
 func parse_grid(input: String) -> Array:
 	var grid: Array = []
@@ -40,6 +43,8 @@ func parse_grid(input: String) -> Array:
 	for line in lines:
 		grid.append(line.split(""))
 	return grid
+#endregion
+
 
 #region part 1
 # Finds the starting position and direction of the guard
@@ -85,12 +90,13 @@ func simulate_guard_path(grid: Array, start_pos: Vector2, direction: Vector2) ->
 	return visited_positions
 #endregion
 
+
 #region part 2
 # Simulates the guard's movement and returns all visited positions.
 func simulate_guard(map: Array, start: Vector2) -> Array:
 	var pos = start
 	var direction = Direction.UP
-	var visited_positions = {}  # Use a Dictionary for fast lookup
+	var visited_positions = {}  # Use a Dictionary for faster lookup instead of Array
 
 	while is_within_bounds(map, pos):
 		visited_positions[pos] = true
@@ -146,8 +152,6 @@ func causes_loop(map: Array, start: Vector2) -> bool:
 			pos = next_pos
 
 	return false
-
-# Utility functions
 
 
 # Returns true if the position is within the bounds of the map
