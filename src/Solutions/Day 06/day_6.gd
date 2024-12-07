@@ -1,6 +1,9 @@
 extends Control
 
 var inputs: String = ProblemInputs.day6Inputs
+# Caches the results of obstruction checks for optimization
+var obstruction_cache: Dictionary = {}
+var virtual_walls: Dictionary = {}
 enum Direction { LEFT, RIGHT, UP, DOWN }
 var direction_vectors = {
 	Direction.LEFT: Vector2(-1, 0),
@@ -10,6 +13,7 @@ var direction_vectors = {
 }
 
 func _ready() -> void:
+	await get_tree().create_timer(5).timeout
 	var grid: Array = parse_grid(inputs)
 	
 	# Find the starting position and direction of the guard
@@ -95,7 +99,7 @@ func simulate_guard_path(grid: Array, start_pos: Vector2, direction: Vector2) ->
 func simulate_guard(map: Array, start: Vector2) -> Array:
 	var pos = start
 	var direction = Direction.UP
-	var visited_positions = {}  # Use a Dictionary for faster lookup instead of Array
+	var visited_positions = {}  # Using a Dictionary for fast lookup
 
 	while is_within_bounds(map, pos):
 		visited_positions[pos] = true
@@ -112,25 +116,35 @@ func simulate_guard(map: Array, start: Vector2) -> Array:
 	return visited_positions.keys()
 
 
+
 # Finds valid positions for adding an obstruction that causes a loop
 func find_valid_obstruction_positions(map: Array, start: Vector2, traversed_path: Array) -> Array:
 	var valid_positions = []
+	var virtual_walls = {}  # Dictionary to simulate temporary walls without modifying map
 
 	for candidate in traversed_path:
 		if candidate == start:
 			continue  # Skip the starting position
 
-		# Temporarily add an obstruction at the candidate position
-		map[candidate.y][candidate.x] = "#"
-		if causes_loop(map, start):  # Check if this creates a loop
+		# Check the cache before recalculating
+		if obstruction_cache.has(candidate):
+			if obstruction_cache[candidate]:
+				valid_positions.append(candidate)
+			continue
+
+		# Simulate placing an obstruction
+		virtual_walls[candidate] = true
+		var causes_loop_result = causes_loop(map, start, virtual_walls)
+		obstruction_cache[candidate] = causes_loop_result  # Cache the result
+		if causes_loop_result:
 			valid_positions.append(candidate)
-		map[candidate.y][candidate.x] = "."  # Reset the map
+		virtual_walls.erase(candidate)  # Remove the virtual wall
 
 	return valid_positions
 
 
-# Checks if placing an obstruction causes the guard to get stuck in a loop
-func causes_loop(map: Array, start: Vector2) -> bool:
+# Optimized loop detection with iteration limit
+func causes_loop(map: Array, start: Vector2, virtual_walls: Dictionary) -> bool:
 	var pos = start
 	var direction = Direction.UP
 	var visited_states = {}  # Use a Dictionary to track states (position + direction)
@@ -145,7 +159,8 @@ func causes_loop(map: Array, start: Vector2) -> bool:
 		if not is_within_bounds(map, next_pos):
 			break
 
-		if is_wall(map, next_pos):
+		# Check for virtual walls first, then physical walls
+		if virtual_walls.has(next_pos) or is_wall(map, next_pos):
 			direction = turn_right(direction)
 		else:
 			pos = next_pos
@@ -160,7 +175,7 @@ func is_within_bounds(map: Array, pos: Vector2) -> bool:
 
 # Returns true if the position contains a wall
 func is_wall(map: Array, pos: Vector2) -> bool:
-	return is_within_bounds(map, pos) and map[pos.y][pos.x] == "#"
+	return is_within_bounds(map, pos) and (map[pos.y][pos.x] == "#" or virtual_walls.has(pos))
 
 
 func turn_right(direction: int):
