@@ -2,7 +2,6 @@ extends Control
 
 var inputs: String = ProblemInputs.day6Inputs
 enum Direction { LEFT, RIGHT, UP, DOWN }
-
 var direction_vectors = {
 	Direction.LEFT: Vector2(-1, 0),
 	Direction.RIGHT: Vector2(1, 0),
@@ -32,7 +31,7 @@ func _ready() -> void:
 	print_rich("[center]------------------------------------------")
 	print("[center]Part 2: Valid obstruction positions: [color=Green]{obstructions}[/color]".format({"obstructions": valid_positions.size()}))
 	print_rich("[center]------------------------------------------")
-	print_rich("[center][b]Calculations finished: {time}seconds[/b][/center]".format({"time": ((end - start) / 1000)}) )
+	print_rich("[center][b]Calculations finished: {time}seconds[/b][/center]".format({"time": (floor((end - start) / 1000.0))}) )
 
 
 #region setup
