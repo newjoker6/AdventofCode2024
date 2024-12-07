@@ -120,7 +120,7 @@ func simulate_guard(map: Array, start: Vector2) -> Array:
 # Finds valid positions for adding an obstruction that causes a loop
 func find_valid_obstruction_positions(map: Array, start: Vector2, traversed_path: Array) -> Array:
 	var valid_positions = []
-	var virtual_walls = {}  # Dictionary to simulate temporary walls without modifying map
+	
 
 	for candidate in traversed_path:
 		if candidate == start:
@@ -144,7 +144,7 @@ func find_valid_obstruction_positions(map: Array, start: Vector2, traversed_path
 
 
 # Optimized loop detection with iteration limit
-func causes_loop(map: Array, start: Vector2, virtual_walls: Dictionary) -> bool:
+func causes_loop(map: Array, start: Vector2, vwalls: Dictionary) -> bool:
 	var pos = start
 	var direction = Direction.UP
 	var visited_states = {}  # Use a Dictionary to track states (position + direction)
@@ -160,7 +160,7 @@ func causes_loop(map: Array, start: Vector2, virtual_walls: Dictionary) -> bool:
 			break
 
 		# Check for virtual walls first, then physical walls
-		if virtual_walls.has(next_pos) or is_wall(map, next_pos):
+		if vwalls.has(next_pos) or is_wall(map, next_pos):
 			direction = turn_right(direction)
 		else:
 			pos = next_pos
