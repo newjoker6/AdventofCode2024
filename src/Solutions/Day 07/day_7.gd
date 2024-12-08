@@ -7,16 +7,22 @@ var operator_combinations_cache: Dictionary = {}
 func _ready() -> void:
 	# Process and print the result
 	#part 1
-	var result: int = process_equations(inputs)
-	print_rich("[center]---------------------------------\nPart 1\n---------------------------------")
-	print_rich("[center]Total calibration result: [color=Green]%d[/color]\n---------------------------------" %result)
-	
-	# part 2
 	var start:float = Time.get_ticks_msec()
 	var ustart:float = Time.get_ticks_usec()
-	result = process_equations_part2(inputs)
+	var result: int = process_equations(inputs)
 	var end:float = Time.get_ticks_msec()
 	var uend:float = Time.get_ticks_usec()
+	print_rich("[center]---------------------------------\nPart 1\n---------------------------------")
+	print_rich("[center]Total calibration result: [color=Green]%d[/color]\n---------------------------------" %result)
+	print_rich("[center][b]Part 1 Calculations finished: [color=Green]{time}[/color] seconds[/b][/center]".format({"time": (floor((end - start) / 1000.0))}) )
+	print_rich("[center][b]Part 1 Accurate Calculations finished: [color=Green]{time}[/color] seconds[/b][/center]".format({"time": ((uend - ustart)/ 1000000.0)}))
+	
+	# part 2
+	start = Time.get_ticks_msec()
+	ustart = Time.get_ticks_usec()
+	result = process_equations_part2(inputs)
+	end = Time.get_ticks_msec()
+	uend = Time.get_ticks_usec()
 	print_rich("[center]---------------------------------\nPart 2\n---------------------------------")
 	print_rich("[center]Total calibration result: [color=Green]%d[/color]\n---------------------------------" %result)
 	print_rich("[center][b]Part 2 Calculations finished: [color=Green]{time}[/color] seconds[/b][/center]".format({"time": (floor((end - start) / 1000.0))}) )
