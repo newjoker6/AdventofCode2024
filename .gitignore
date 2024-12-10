@@ -9,6 +9,7 @@ project.godot
 *.svg
 *.import
 *.tmp
+src/Solutions/Day 09/
 
 # Imported translations (automatically generated from CSV files)
 *.translation
